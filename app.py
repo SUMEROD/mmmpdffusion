@@ -27,7 +27,7 @@ def merge_pdfs():
         if file.filename == '':
             return jsonify({'error': 'Un ou plusieurs fichiers n\'ont pas de nom'}), 400
         if not allowed_file(file.filename):
-            return jsonify({'error': f'Le fichier {file.filename} n'est pas un PDF'}), 400
+            return jsonify({'error': f'Le fichier {file.filename} n\'est pas un PDF'}), 400
 
     merge_id = str(uuid.uuid4())
     file_paths = []
