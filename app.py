@@ -25,7 +25,7 @@ def merge_pdfs():
 
     for file in files:
         if file.filename == '':
-            return jsonify({'error': 'Un ou plusieurs fichiers n'ont pas de nom'}), 400
+            return jsonify({'error': 'Un ou plusieurs fichiers n\'ont pas de nom'}), 400
         if not allowed_file(file.filename):
             return jsonify({'error': f'Le fichier {file.filename} n'est pas un PDF'}), 400
 
