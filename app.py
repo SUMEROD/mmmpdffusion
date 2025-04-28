@@ -23,11 +23,17 @@ def merge_pdfs():
     if len(files) < 2:
         return jsonify({'error': 'Veuillez fournir au moins deux fichiers PDF à fusionner'}), 400
 
-    for file in files:
-        if file.filename == '':
-            return jsonify({'error': 'Un ou plusieurs fichiers n\'ont pas de nom'}), 400
-        if not allowed_file(file.filename):
-            return jsonify({'error': f'Le fichier {file.filename} n\'est pas un PDF'}), 400
+for file in files:
+    if file.filename == '':
+        return jsonify({'error': 'Un ou plusieurs fichiers n\'ont pas de nom'}), 400
+    try:
+        # Tenter d'ouvrir le fichier directement avec PyPDF2 pour vérifier que c'est un PDF
+        reader = PyPDF2.PdfReader(file.stream)
+        if len(reader.pages) == 0:
+            raise Exception("Pas de pages")
+        file.stream.seek(0)  # Revenir au début du fichier après lecture
+    except Exception as e:
+        return jsonify({'error': f'Le fichier {file.filename or "inconnu"} n\'est pas un PDF valide ({str(e)})'}), 400
 
     merge_id = str(uuid.uuid4())
     file_paths = []
